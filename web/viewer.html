@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Balloon Viewer</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
+        #container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+        #canvas-container {
+            flex-grow: 1;
+            height: 100%;
+            position: relative; /* Needed for positioning controls inside */
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        #controls-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(40, 40, 40, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            width: 230px;
+        }
+        #controls-panel.hidden .collapsible {
+            display: none;
+        }
+        #toggle-controls-btn {
+            width: 100%;
+            text-align: right;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        #sample-list-container {
+            width: 250px;
+            padding: 10px;
+            box-sizing: border-box;
+            background-color: #f0f0f0;
+            overflow-y: auto;
+        }
+        #sample-list h4 {
+            margin: 10px 0 5px 0;
+            padding-left: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            color: #333;
+        }
+        #sample-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #sample-list li {
+            padding: 8px;
+            padding-left: 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #ddd;
+        }
+        #sample-list li:hover {
+            background-color: #e0e0e0;
+        }
+        #sample-list li.active {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="canvas-container">
+            <canvas id="glcanvas"></canvas>
+            <div id="controls-panel">
+                <div id="toggle-controls-btn">[ - ]</div>
+                <div class="collapsible">
+                    <div class="control-row">
+                        <label for="icosphere-checkbox">Use Icosphere</label>
+                        <input type="checkbox" id="icosphere-checkbox">
+                    </div>
+                    <div class="control-row">
+                        <label for="color-checkbox">Checkered Color</label>
+                        <input type="checkbox" id="color-checkbox" checked>
+                    </div>
+                    <div class="control-row">
+                        <label for="detail-slider">Detail</label>
+                        <input type="range" id="detail-slider" min="0" max="5" value="3" style="width: 120px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="sample-list-container">
+            <h3>Samples</h3>
+            <ul id="sample-list"></ul>
+        </div>
+    </div>
+    <script src="samples.js"></script>
+    <script src="parser.js"></script>
+    <script src="balloon.js"></script>
+    <script src="viewer.js"></script>
+</body>
+</html>
