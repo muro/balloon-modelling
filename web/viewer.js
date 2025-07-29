@@ -326,6 +326,11 @@ function initBuffers(gl, balloon) {
 }
 
 function drawScene(gl, programInfo, buffers, boundingSphere, rotationX, rotationY, zoom) {
+    // Exit if the canvas is not yet sized.
+    if (gl.canvas.width === 0 || gl.canvas.height === 0) {
+        return;
+    }
+
     resizeCanvasToDisplaySize(gl.canvas);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
     gl.clearColor(0.1, 0.1, 0.1, 1.0);
