@@ -9,6 +9,9 @@ function main() {
         return;
     }
 
+    // Ensure the canvas is correctly sized before we do anything else.
+    resizeCanvasToDisplaySize(gl.canvas);
+
     const vsSource = `
         attribute vec4 aVertexPosition;
         attribute vec3 aVertexNormal;
@@ -331,15 +334,20 @@ function drawScene(gl, programInfo, buffers, boundingSphere, rotationX, rotation
     gl.depthFunc(gl.LEQUAL);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    const fieldOfView = 45 * Math.PI / 180;
+    const fieldOfViewY = 45 * Math.PI / 180;
     const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
     const projectionMatrix = mat4.create();
-    mat4.perspective(projectionMatrix, fieldOfView, aspect, 0.1, 1000.0);
+    mat4.perspective(projectionMatrix, fieldOfViewY, aspect, 0.1, 1000.0);
 
     const modelViewMatrix = mat4.create();
     
-    // Calculate distance to fit the bounding sphere
-    const distance = (boundingSphere.radius / Math.tan(fieldOfView / 2)) * 1.2 / zoom; // *1.2 for padding
+    // Calculate distance to fit the bounding sphere in both dimensions
+    const fieldOfViewX = 2 * Math.atan(Math.tan(fieldOfViewY / 2) * aspect);
+    const distanceForY = boundingSphere.radius / Math.tan(fieldOfViewY / 2);
+    const distanceForX = boundingSphere.radius / Math.tan(fieldOfViewX / 2);
+    
+    const distance = Math.max(distanceForX, distanceForY) * 1.2 / zoom; // *1.2 for padding
+
     mat4.translate(modelViewMatrix, modelViewMatrix, [0.0, 0.0, -distance]);
 
     mat4.rotate(modelViewMatrix, modelViewMatrix, rotationX, [1, 0, 0]);
